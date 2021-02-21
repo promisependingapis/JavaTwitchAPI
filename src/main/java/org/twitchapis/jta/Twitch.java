@@ -7,6 +7,7 @@ import org.twitchapis.jta.utils.logger;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Scanner;
 
 /**
  * @author LoboMetalurgico
@@ -34,6 +35,14 @@ public class Twitch {
                     TextFormat.GREEN +
                     " file.");
             logger.info("Please put your twitch token first!");
+
+            Scanner in = new Scanner(System.in);
+
+            String s = in.nextLine();
+
+            logger.debug("Your Token Is: " + s);
+
+            logger.warn("Please wait while we verify your token...");
             logger.fatal("Not Implemented!", 0);
         }
 

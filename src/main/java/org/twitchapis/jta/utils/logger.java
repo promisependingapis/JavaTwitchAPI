@@ -9,12 +9,16 @@ import com.sun.istack.internal.Nullable;
  */
 
 public class logger {
+    public static void debug(String string) {
+        System.out.println(TextFormat.RESET + TextFormat.PURPLE_BRIGHT + string + TextFormat.RESET);
+    }
+
     public static void info(String string) {
         System.out.println(TextFormat.RESET + string + TextFormat.RESET);
     }
 
     public static void warn(String string) {
-        System.out.println(TextFormat.RESET + TextFormat.YELLOW + string + TextFormat.RESET);
+        System.out.println(TextFormat.RESET + TextFormat.YELLOW_BRIGHT + string + TextFormat.RESET);
     }
 
     public static void error(String string) {
@@ -28,7 +32,7 @@ public class logger {
     }
 
     public static void fatal(String string, Integer exitCode) {
-        System.out.println(TextFormat.RESET + TextFormat.BLACK_BACKGROUND_BRIGHT + TextFormat.RED + string + TextFormat.RESET);
+        System.out.println(TextFormat.RESET + TextFormat.BLACK_BACKGROUND_BRIGHT + TextFormat.RED_BOLD_BRIGHT + string + TextFormat.RESET);
 
         System.exit(exitCode);
     }
