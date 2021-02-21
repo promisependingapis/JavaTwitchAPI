@@ -1,4 +1,4 @@
-name: PowerNukkit v1.X
+name: JavaTwitchAPI 1.x
 
 on: [push,pull_request]
 
@@ -31,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v1
         if: success()
         with:
-          name: PowerNukkit
+          name: JTA
           path: target/jta.jar
