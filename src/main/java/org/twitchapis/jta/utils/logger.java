@@ -1,8 +1,5 @@
 package org.twitchapis.jta.utils;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
 /**
  * @author LoboMetalurgico
  * @since 2021-02-20
