@@ -32,4 +32,4 @@ jobs:
         if: success()
         with:
           name: PowerNukkit
-          path: target/powernukkit.jar
+          path: target/jta.jar
