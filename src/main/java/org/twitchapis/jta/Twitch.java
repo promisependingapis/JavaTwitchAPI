@@ -2,7 +2,8 @@ package org.twitchapis.jta;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import lombok.extern.log4j.Log4j2;
+import org.twitchapis.jta.utils.TextFormat;
+import org.twitchapis.jta.utils.logger;
 
 import java.io.File;
 import java.net.URI;
@@ -12,12 +13,11 @@ import java.net.URI;
  * @since 2021-02-14
  */
 
-@Log4j2
 public class Twitch {
     private final String filePath;
     private final String dataPath;
     private final String pluginPath;
-    private final URI uri;
+    // private final URI uri;
 
     Twitch(final String filePath, String dataPath, String pluginPath) {
         this.filePath = filePath;
@@ -25,13 +25,21 @@ public class Twitch {
         this.pluginPath = pluginPath;
 
         if (!new File(this.dataPath + "config.yml").exists()) {
-            log.info(TextFormat.GREEN + "Welcome! Please choose a language first!");
+            logger.info(TextFormat.GREEN + "Welcome! This small guide will help you with the initial settings, but remember: you can change everything later in the " +
+                    TextFormat.RESET +
+                    TextFormat.GREEN_BOLD +
+                    TextFormat.GREEN_UNDERLINED +
+                    "config.yml" +
+                    TextFormat.RESET +
+                    TextFormat.GREEN +
+                    " file.");
+            logger.info("Please put your twitch token first!");
+            logger.fatal("Not Implemented!", 0);
         }
 
 
-        this.uri = URI.create("");
-
-
-        Socket socket = IO.socket(this.uri);
+        /* this.uri = URI.create("");
+           Socket socket = IO.socket(this.uri);
+         */
     }
 }
