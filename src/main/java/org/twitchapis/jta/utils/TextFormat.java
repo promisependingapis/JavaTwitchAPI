@@ -4,10 +4,6 @@ package org.twitchapis.jta.utils;
  * @author LoboMetalurgico
  * @since 2021-02-14
  */
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
 
 public class TextFormat {
     // Reset

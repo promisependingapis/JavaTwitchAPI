@@ -1,12 +1,15 @@
 package org.twitchapis.jta;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
+import org.java_websocket.client.WebSocketClient;
+import org.twitchapis.jta.twitch.api.actions.TokenVerify;
+import org.twitchapis.jta.twitch.ws.WebSocket;
 import org.twitchapis.jta.utils.TextFormat;
 import org.twitchapis.jta.utils.logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
 /**
@@ -18,9 +21,8 @@ public class Twitch {
     private final String filePath;
     private final String dataPath;
     private final String pluginPath;
-    // private final URI uri;
 
-    Twitch(final String filePath, String dataPath, String pluginPath) {
+    Twitch(final String filePath, String dataPath, String pluginPath) throws InterruptedException, IOException, URISyntaxException {
         this.filePath = filePath;
         this.dataPath = dataPath;
         this.pluginPath = pluginPath;
@@ -38,17 +40,18 @@ public class Twitch {
 
             Scanner in = new Scanner(System.in);
 
-            String s = in.nextLine();
+            String token = in.nextLine();
 
-            logger.debug("Your Token Is: " + s);
+            logger.debug("Your Token Is: " + token);
 
             logger.warn("Please wait while we verify your token...");
-            logger.fatal("Not Implemented!", 0);
+
+            TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
+
+            WebSocketClient twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token);
+            twitchws.connect();
+
+            // logger.fatal("Not Implemented!", 0);
         }
-
-
-        /* this.uri = URI.create("");
-           Socket socket = IO.socket(this.uri);
-         */
     }
 }
