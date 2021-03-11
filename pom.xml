@@ -54,10 +54,28 @@
     </contributors>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+					<configuration>
+					  <release>11</release>
+					  <compilerArgs>
+						<arg>--add-reads</arg>
+						<arg>JavaTwitchAPI=ALL-UNNAMED</arg>
+					  </compilerArgs>
+					</configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <distributionManagement>
         <snapshotRepository>

@@ -5,5 +5,4 @@
 
 module JavaTwitchAPI {
     requires java.net.http;
-    requires Java.WebSocket;
 }
