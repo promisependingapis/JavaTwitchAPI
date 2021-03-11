@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 /**
@@ -21,6 +22,8 @@ public class Twitch {
     private final String filePath;
     private final String dataPath;
     private final String pluginPath;
+    private String token;
+    private Boolean tokenIsValid = false;
 
     Twitch(final String filePath, String dataPath, String pluginPath) throws InterruptedException, IOException, URISyntaxException {
         this.filePath = filePath;
@@ -38,20 +41,27 @@ public class Twitch {
                     " file.");
             logger.info("Please put your twitch token first!");
 
-            Scanner in = new Scanner(System.in);
+            do {
+                Scanner in = new Scanner(System.in);
 
-            String token = in.nextLine();
+                token = in.nextLine();
 
-            logger.debug("Your Token Is: " + token);
+                logger.debug("Your Token Is: " + token);
 
-            logger.warn("Please wait while we verify your token...");
+                logger.warn("Please wait while we verify your token...");
 
-            TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
+                HttpResponse<String> tokenV = TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
+
+                if (tokenV.statusCode() != 200) {
+                    logger.error("Invalid Token! Please insert a valid token.");
+                } else {
+                    this.tokenIsValid = true;
+                }
+            } while (!tokenIsValid);
 
             WebSocketClient twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token);
-            twitchws.connect();
 
-            // logger.fatal("Not Implemented!", 0);
+            twitchws.connect();
         }
     }
 }
