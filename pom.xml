@@ -20,13 +20,13 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/twitchapis/jta/issues</url>
+        <url>https://github.com/twitchapis/JavaTwitchAPI/issues</url>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/twitchapis/jta.git</connection>
-        <developerConnection>scm:git:ssh://github.com/twitchapis/jta.git</developerConnection>
-        <url>https://github.com/twitchapis/jta</url>
+        <connection>scm:git:https://github.com/twitchapis/JavaTwitchAPI.git</connection>
+        <developerConnection>scm:git:ssh://github.com/twitchapis/JavaTwitchAPI.git</developerConnection>
+        <url>https://github.com/twitchapis/JavaTwitchAPI</url>
     </scm>
 
     <licenses>
