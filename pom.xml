@@ -60,8 +60,8 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>jta-snapshots</id>
-            <name>jta-snapshots</name>
+            <id>twitchapis-snapshots</id>
+            <name>twitchapis-snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
