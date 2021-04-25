@@ -1,15 +1,12 @@
 package org.twitchapis.jta;
 
-import org.java_websocket.client.WebSocketClient;
 import org.twitchapis.jta.twitch.api.actions.TokenVerify;
 import org.twitchapis.jta.twitch.ws.WebSocket;
 import org.twitchapis.jta.utils.TextFormat;
 import org.twitchapis.jta.utils.logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
@@ -23,9 +20,12 @@ public class Twitch {
     private final String dataPath;
     private final String pluginPath;
     private String token;
+    private String channel;
+    private String[] channels;
     private Boolean tokenIsValid = false;
+    private Boolean validChannels = false;
 
-    Twitch(final String filePath, String dataPath, String pluginPath) throws InterruptedException, IOException, URISyntaxException {
+    Twitch(final String filePath, String dataPath, String pluginPath) throws Exception {
         this.filePath = filePath;
         this.dataPath = dataPath;
         this.pluginPath = pluginPath;
@@ -46,8 +46,6 @@ public class Twitch {
 
                 token = in.nextLine();
 
-                logger.debug("Your Token Is: " + token);
-
                 logger.warn("Please wait while we verify your token...");
 
                 HttpResponse<String> tokenV = TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
@@ -59,9 +57,38 @@ public class Twitch {
                 }
             } while (!tokenIsValid);
 
-            WebSocketClient twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token);
+            WebSocket twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token);
 
-            twitchws.connect();
+            try {
+                twitchws.connect();
+            } catch (Exception e) {
+                throw new Exception(e);
+            }
+
+            try { Thread.sleep (4000); } catch (InterruptedException ignored) {}
+
+            logger.warn("Enter the name(s) of the channel(s) you want to connect (use space for more than 1 channel).");
+
+            do {
+                Scanner in = new Scanner(System.in);
+
+                channel = in.nextLine();
+
+                if (channel.equals(" ")) channel = "";
+
+                logger.warn("Please wait while we connect with these channels...");
+
+                channels = channel.split(" ");
+
+                if (channels[0] == null || channels[0].equals(" ") || channels[0].equals("")) {
+                    logger.error("Invalid Channel! Please, insert a valid channel!");
+                } else {
+                    this.validChannels = true;
+                }
+            } while (!validChannels);
+            logger.warn("Joining in channels...");
+
+            twitchws.joinChannel(channels);
         }
     }
 }

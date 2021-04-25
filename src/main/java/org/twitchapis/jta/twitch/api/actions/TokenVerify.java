@@ -32,12 +32,6 @@ public class TokenVerify {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        String responseBody = response.body();
-        int responseStatusCode = response.statusCode();
-
-        System.out.println("httpGetRequest: " + responseBody);
-        System.out.println("httpGetRequest status code: " + responseStatusCode);
-
         return response;
     }
 }

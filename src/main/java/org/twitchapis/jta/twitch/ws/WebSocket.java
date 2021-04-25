@@ -2,6 +2,7 @@ package org.twitchapis.jta.twitch.ws;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -39,7 +40,7 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        logger.error("closed with exit code " + code + " additional info: " + reason);
+        logger.fatal("Connection with Twitch closed with code " + code + ". Additional Info: " + reason);
     }
 
     @Override
@@ -63,5 +64,15 @@ public class WebSocket extends WebSocketClient {
             return;
         }
         send(message);
+    }
+
+    public void joinChannel(String channel) {
+        this.emitWSMessage("JOIN " + channel.toLowerCase(Locale.ROOT));
+    }
+
+    public void joinChannel(String[] channels) {
+        for(String channel : channels) {
+            this.emitWSMessage("JOIN " + channel.toLowerCase(Locale.ROOT));
+        }
     }
 }

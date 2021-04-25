@@ -5,4 +5,5 @@
 
 module JavaTwitchAPI {
     requires java.net.http;
+    requires ea.async;
 }
