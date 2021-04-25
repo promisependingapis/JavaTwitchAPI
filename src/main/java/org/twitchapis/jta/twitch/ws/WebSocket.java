@@ -9,6 +9,8 @@ import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
 import org.twitchapis.jta.utils.logger;
 
+import org.json.JSONObject;
+
 /**
  * @author LoboMetalurgico
  * @since 2021-01-17
@@ -45,17 +47,18 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println("received message: " + message);
+        logger.debug("Received Message: " + message);
+        parser(message);
     }
 
     @Override
     public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
+        logger.debug("Received ByteBuffer message");
     }
 
     @Override
     public void onError(Exception ex) {
-        System.err.println("an error occurred:" + ex);
+        logger.fatal("Fatal Error: " + ex);
     }
 
     public void emitWSMessage(String message) {
@@ -67,12 +70,17 @@ public class WebSocket extends WebSocketClient {
     }
 
     public void joinChannel(String channel) {
-        this.emitWSMessage("JOIN " + channel.toLowerCase(Locale.ROOT));
+        send("JOIN " + channel.toLowerCase(Locale.ROOT));
     }
 
     public void joinChannel(String[] channels) {
         for(String channel : channels) {
-            this.emitWSMessage("JOIN " + channel.toLowerCase(Locale.ROOT));
+            send("JOIN " + channel.toLowerCase(Locale.ROOT));
         }
+    }
+
+    private void parser(String message) {
+        String[] parsed = message.split(" ");
+        JSONObject jParsed = new JSONObject();
     }
 }
