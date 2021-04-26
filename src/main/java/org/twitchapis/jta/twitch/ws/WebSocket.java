@@ -18,14 +18,16 @@ import org.json.JSONObject;
 
 public class WebSocket extends WebSocketClient {
     private String token;
+    private String username;
 
     public WebSocket(URI serverUri, Draft draft) {
         super(serverUri, draft);
     }
 
-    public WebSocket(URI serverUri, String token) {
+    public WebSocket(URI serverUri, String token, String username) {
         super(serverUri);
         this.token = token;
+        this.username = username;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class WebSocket extends WebSocketClient {
         logger.debug("Connection Started, Sending auth information...");
         send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
         send("PASS " + this.token);
-        send("NICK JavaTwitchAPI");
+        send("NICK " + this.username);
     }
 
     @Override

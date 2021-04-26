@@ -1,5 +1,6 @@
 package org.twitchapis.jta;
 
+import org.json.JSONObject;
 import org.twitchapis.jta.twitch.api.actions.TokenVerify;
 import org.twitchapis.jta.twitch.ws.WebSocket;
 import org.twitchapis.jta.utils.TextFormat;
@@ -8,6 +9,7 @@ import org.twitchapis.jta.utils.logger;
 import java.io.File;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -21,9 +23,11 @@ public class Twitch {
     private final String pluginPath;
     private String token;
     private String channel;
+    private String username;
     private String[] channels;
     private Boolean tokenIsValid = false;
     private Boolean validChannels = false;
+    private JSONObject tokenResponse;
 
     Twitch(final String filePath, String dataPath, String pluginPath) throws Exception {
         this.filePath = filePath;
@@ -42,22 +46,26 @@ public class Twitch {
             logger.info("Please put your twitch token first!");
 
             do {
-                Scanner in = new Scanner(System.in);
+                if (System.getenv("TOKEN") == null) {
+                    Scanner in = new Scanner(System.in);
 
-                token = in.nextLine();
-
+                    token = in.nextLine();
+                } else {
+                    token = System.getenv("TOKEN");
+                    logger.warn("Detected token in env!");
+                }
                 logger.warn("Please wait while we verify your token...");
 
-                HttpResponse<String> tokenV = TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
+                tokenResponse = TokenVerify.get("https://id.twitch.tv/oauth2/validate", token);
 
-                if (tokenV.statusCode() != 200) {
+                if (tokenResponse.getInt("statusCode") != 200) {
                     logger.error("Invalid Token! Please insert a valid token.");
                 } else {
                     this.tokenIsValid = true;
                 }
             } while (!tokenIsValid);
 
-            WebSocket twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token);
+            WebSocket twitchws = new WebSocket(new URI("wss://irc-ws.chat.twitch.tv"), token, tokenResponse.getString("login"));
 
             try {
                 twitchws.connect();
@@ -70,10 +78,16 @@ public class Twitch {
             logger.warn("Enter the name(s) of the channel(s) you want to connect (use space for more than 1 channel).");
 
             do {
-                Scanner in = new Scanner(System.in);
+                if (System.getenv("CHANNELS") == null) {
+                    Scanner in = new Scanner(System.in);
 
-                channel = in.nextLine();
-
+                    channel = in.nextLine();
+                } else {
+                    channel = System.getenv("CHANNELS")
+                            .replace("[", "")
+                            .replace(",", "")
+                            .replace("]", "");
+                }
                 if (channel.equals(" ")) channel = "";
 
                 logger.warn("Please wait while we connect with these channels...");

@@ -1,5 +1,7 @@
 package org.twitchapis.jta.twitch.api.actions;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,7 +15,7 @@ import java.net.http.HttpResponse;
  */
 
 public class TokenVerify {
-    public static HttpResponse<String> get(String url, String token) throws URISyntaxException, IOException, InterruptedException {
+    public static JSONObject get(String url, String token) throws URISyntaxException, IOException, InterruptedException {
         String finalToken;
 
         if (token.startsWith("oauth:")) {
@@ -32,6 +34,10 @@ public class TokenVerify {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        return response;
+        JSONObject responseO = new JSONObject(response.body());
+
+        responseO.put("statusCode", response.statusCode());
+
+        return responseO;
     }
 }
