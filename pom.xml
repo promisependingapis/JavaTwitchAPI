@@ -56,6 +56,9 @@
     <properties>
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<sonar.projectKey>twitchapis_JavaTwitchAPI</sonar.projectKey>
+	<sonar.organization>twitchapis</sonar.organization>
+	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <distributionManagement>
